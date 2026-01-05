@@ -199,14 +199,22 @@
         }
         
         .signature-actions {
-            display: flex;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
             margin-top: 15px;
         }
         
         .signature-actions .btn {
-            flex: 1;
             justify-content: center;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+        
+        @media (min-width: 600px) {
+            .signature-actions {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
         
         .btn {
@@ -513,7 +521,7 @@
                     <div class="signature-actions">
                         <button class="btn btn-clear" onclick="clearSignature('safety-signature')">🗑️ נקה חתימה</button>
                         <button class="btn btn-secondary" onclick="clearForm('safety')">🔄 נקה טופס</button>
-                        <button class="btn btn-download" onclick="downloadForm('safety')">📥 הורד כ-PDF</button>
+                        <button class="btn btn-download" onclick="downloadForm('safety')">📥 PDF</button>
                         <button class="btn btn-share" onclick="shareForm('safety')">📤 שתף</button>
                     </div>
                 </div>
@@ -613,7 +621,7 @@
                     <div class="signature-actions">
                         <button class="btn btn-clear" onclick="clearSignature('liability-signature')">🗑️ נקה חתימה</button>
                         <button class="btn btn-secondary" onclick="clearForm('liability')">🔄 נקה טופס</button>
-                        <button class="btn btn-download" onclick="downloadForm('liability')">📥 הורד כ-PDF</button>
+                        <button class="btn btn-download" onclick="downloadForm('liability')">📥 PDF</button>
                         <button class="btn btn-share" onclick="shareForm('liability')">📤 שתף</button>
                     </div>
                 </div>
