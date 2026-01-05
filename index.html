@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טפסי בטיחות ופטור מאחריות - חתימה דיגיטלית</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 0;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #34495e;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.7);
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        .form-title {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .rules-box {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .rules-box h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .rules-box ol {
+            padding-right: 25px;
+            line-height: 1.8;
+        }
+        
+        .rules-box li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        .legal-text {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            max-height: 300px;
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 14px;
+            color: #444;
+        }
+        
+        .legal-text p {
+            margin-bottom: 15px;
+        }
+        
+        .signature-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .signature-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .signature-canvas-container {
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            padding: 10px;
+            background: #fafafa;
+            margin-bottom: 15px;
+        }
+        
+        .signature-canvas {
+            width: 100%;
+            height: 150px;
+            background: white;
+            border-radius: 8px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        
+        .signature-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .signature-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-clear {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-clear:hover {
+            background: #c0392b;
+        }
+        
+        .btn-submit {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background: #219a52;
+        }
+        
+        .btn-download {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-download:hover {
+            background: #2980b9;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+        
+        .validity-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+        
+        .saved-forms-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .saved-forms-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .saved-forms-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .saved-form-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .saved-form-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .saved-form-info {
+            flex: 1;
+        }
+        
+        .saved-form-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .saved-form-date {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 3px;
+        }
+        
+        .saved-form-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .no-saved-forms {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 20px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .modal-content h3 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .modal-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            background: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .checkmark svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .tab {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .header, .tabs, .signature-actions, .form-actions, .saved-forms-section {
+                display: none !important;
+            }
+            
+            .form-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .form-section {
+                display: block !important;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚛 טפסי בטיחות ופטור מאחריות</h1>
+            <p>יהודה פלדות בע"מ - מערכת חתימה דיגיטלית</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('safety')">טופס בטיחות</button>
+            <button class="tab" onclick="switchTab('liability')">פטור מאחריות על פריקת גרוטאות</button>
+        </div>
+        
+        <div class="form-container">
+            <!-- Safety Form -->
+            <div id="safety-form" class="form-section active">
+                <h2 class="form-title">טופס בטיחות</h2>
+                
+                <div class="validity-notice">
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <span>⚠️ טופס זה תקף עד:</span>
+                        <input type="month" id="safety-validity" value="2027-02" style="padding: 8px; border: 1px solid #ffc107; border-radius: 5px; font-family: inherit;">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="safety-supplier">שם הספק:</label>
+                        <input type="text" id="safety-supplier" placeholder="הזן שם ספק">
+                    </div>
+                    <div class="form-group">
+                        <label for="safety-date">תאריך:</label>
+                        <input type="date" id="safety-date">
+                    </div>
+                </div>
+                
+                <div class="rules-box">
+                    <h3>כללי הבטיחות:</h3>
+                    <ol>
+                        <li>חובה לחבוש קסדות מגן ואפוד זוהר בירידה מהמשאית.</li>
+                        <li>חובה לנוע עם בגדי עבודה תקינים ונעלי עבודה בטיחותיים.</li>
+                        <li>נסיעה לאחור מותרת רק באמצעות מחוון.</li>
+                        <li>פריקה תתבצע רק באישור המסווג.</li>
+                        <li>לפני הנסיעה חובה להוריד את הרמ-סע למצב מאוזן ולנעול את הדלת.</li>
+                        <li>מהירות נסיעה מותרת במגרש עד 10 קמ"ש.</li>
+                        <li>חובה לשמור מרחק של 6 מטר מכלי צמ"ה ומשאיות במגרש.</li>
+                    </ol>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="safety-fullname">שם ושם משפחה:</label>
+                        <input type="text" id="safety-fullname" placeholder="הזן שם מלא">
+                    </div>
+                    <div class="form-group">
+                        <label for="safety-id">מס' ת.ז:</label>
+                        <input type="text" id="safety-id" placeholder="הזן מספר תעודת זהות">
+                    </div>
+                </div>
+                
+                <div class="signature-section">
+                    <h3>חתימת הנהג:</h3>
+                    <div class="signature-canvas-container">
+                        <canvas id="safety-signature" class="signature-canvas"></canvas>
+                    </div>
+                    <div class="signature-actions">
+                        <button class="btn btn-clear" onclick="clearSignature('safety-signature')">🗑️ נקה חתימה</button>
+                        <button class="btn btn-secondary" onclick="clearForm('safety')">🔄 נקה טופס</button>
+                        <button class="btn btn-download" onclick="downloadForm('safety')">📥 הורד כ-PDF</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Liability Form -->
+            <div id="liability-form" class="form-section">
+                <h2 class="form-title">פטור מאחריות על פריקת גרוטאות</h2>
+                
+                <div class="validity-notice">
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <span>⚠️ חתימה זו תקפה עד לתאריך:</span>
+                        <input type="date" id="liability-validity" value="2027-02-01" style="padding: 8px; border: 1px solid #ffc107; border-radius: 5px; font-family: inherit;">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="liability-date">תאריך:</label>
+                    <input type="date" id="liability-date" style="max-width: 250px;">
+                </div>
+                
+                <div class="legal-text">
+                    <p><strong>לכבוד</strong><br>
+                    יהודה פלדות בע"מ ו/או יהודה רשתות פלדה בע"מ<br>
+                    ו/או כל חברה אם או חברה בת או חברה או תאגיד השלובים או הקשורים בהן</p>
+                    
+                    <p><strong>נכבדינו,</strong></p>
+                    
+                    <p><strong>הנידון: פטור מאחריות על פריקת גרוטאות</strong></p>
+                    
+                    <p>הואיל ואנו, החותמים מטה, מספקים לכם ו/או מובילים עבורכם גרוטאות, הנאספות במכולות ("רמסות"), ממקומות איסופן, ואחראים להובלת הגרוטאות ולפריקתן מהרמסות בחצר מפעליכם;</p>
+                    
+                    <p>והואיל ובמקרים רבים בהם לא ניתן לפרוק את הגרוטאות מהרמסה מסיבות שונות, אנו, או הנהגים מטעמנו, המובילים את הגרוטאות, מבקשים מכם או מי מטעמכם לסייע בפריקת הגרוטאות מהרמסות;</p>
+                    
+                    <p>והואיל ואתם אינכם חייבים לסייע בכך, אולם אתם או מי מטעמכם, נענים מדי פעם לבקשתנו, או בקשת מי מטעמנו, לסייע בפריקת הרמסה, וזאת בכפוף לכך שאנו נישא במלוא האחריות לפריקת הגרוטאות מהרמסות בחצר מפעליכם ולנזקים העלולים להיגרם כתוצאה מכך, גם אם אתם או מי מטעמכם תסייעו בכך, ובכפוף לכך שאנו מתחייבים לשפות אתכם על כל הוצאה, נזק או דרישה שיופנו אליהם בקשר לכך;</p>
+                    
+                    <p><strong>לפיכך, אנו הח"מ, מצהירים, מאשרים, מסכימים ומתחייבים בזה, יחד ולחוד, כי:</strong></p>
+                    
+                    <p>1. הוסבר לנו על ידכם בבירור, כי בנוסף לכללי הבטיחות החלים על הובלת הגרוטאות ופריקתן, וכללי הבטיחות החלים במפעליכם, יש לפרוק את הגרוטאות מהרמסות רק בהתקיים התנאים הבאים:<br>
+                    1.1 פריקת הרמסות לא תתבצע לעולם כאשר הרמסה מורמת למעלה;<br>
+                    1.2 פריקת הגרוטאות מהרמסה תבוצע אך ורק כאשר הרמסה במצב אופקי.</p>
+                    
+                    <p>2. אנו מאשרים ומסכימים בזה, באופן בלתי חוזר, כי אנו נישא בכל האחריות לפריקת הגרוטאות מהרמסות, גם אם זו תבוצע בסיוע שלכם או של מי מטעמכם, לרבות באותם מקרים שאתם או מי מטעמכם תסייעו לנו, או לנהג לפרוק את הגרוטאות מהרמסות.</p>
+                    
+                    <p>3. אנו פוטרים אתכם ו/או כל מי מטעמכם, מאחריות לפריקת הגרוטאות, גם אם כתוצאה מהפריקה - ייגרמו נזקים מכל מין וסוג שהוא, לגוף או לרכוש, לרבות נזקים למשאית המובילה את הגרוטאות, ואפילו נזקים אלה נגרמו עקב רשלנות שלכם, או של מי מטעמכם.</p>
+                    
+                    <p>4. אנו מתחייבים לשפות אתכם על כל ומלוא הנזקים שיגרמו לכם והנובעים באופן ישיר ו/או עקיף מפריקת הגרוטאות, ובכלל זאת הוצאות מכל סוג שהוא שיגרמו לכם כתוצאה מכך.</p>
+                    
+                    <p>5. אנו נישא באחריות על פי דין לכל אבדן, פגיעה, נזק או הפסד לגוף ו/או לרכוש, מכל סוג ומין שהם, שייגרמו לכם או למי מטעמכם (לרבות עובדים, אורחים, קבלני משנה מטעמכם וצד שלישי כלשהו) ו/או לנו, או לרכושנו או למי מטעמנו ו/או לצד שלישי כלשהו, בכל הקשור או כתוצאה מפריקת הגרוטאות מהרמסות, וזאת בלי לגרוע מאחריותנו עפ"י כל דין לנזק כאמור.</p>
+                    
+                    <p>6. אנו לוקחים על עצמנו, יחד וכל אחד לחוד, אחריות מלאה על פריקת הגרוטאות מהרמסות, ובכלל זאת על כל נזק שיגרם לנו או למי מטעמנו ו/או נזק שיגרם לרכושנו או לרכוש של מי מטעמנו, או של צד שלישי כלשהו כתוצאה או בקשר לפריקת הגרוטאות מהרמסות, כאמור.</p>
+                    
+                    <p>7. בלי לגרוע מאחריותנו על פי מסמך זה ועל פי כל דין, הננו מתחייבים לערוך ולקיים, על חשבוננו, במשך כל התקופה בה הננו מספקים או מובילים לכם גרוטאות, באמצעות חברת ביטוח מורשית, ביטוחים מתאימים, המכסים את אחריותנו, כאמור, כולל ביטוח חבות מעבידים וביטוח צד שלישי (לנזקי גוף ורכוש) בסכומים מתאימים.</p>
+                    
+                    <p>הפוליסות הנ"ל תכלולנה תנאי מפורש לפיו לא תבוטלנה ולא יחול בהן שינוי לרעה במשך תקופת הביטוח, אלא אם כן תימסר הודעה כתובה בדואר רשום לידיכם לפחות 30 יום מראש, וסעיף לפיו חברת הביטוח לא תהא רשאית לחזור אליכם מכל סיבה שהיא בכל מקרה של אירוע ביטוחי.</p>
+                    
+                    <p>8. הננו פוטרים בזאת אתכם ואת הבאים מטעמכם, לרבות עובדים, מנהלים או כל מי מטעמכם מאחריות לאבדן או נזק אשר יגרמו לכל רכוש אשר ישמש לפריקת הגרוטאות, ובלבד שהפטור כאמור לא יחול לטובת אדם אשר גרם לנזק בזדון.</p>
+                    
+                    <p>9. התחייבות זו לעיל תחול על כל פריקה של גרוטאות במפעליכם, בלא שיהא צורך בחתימת התחייבות נפרדת ביחס לכל פריקה, או ביחס לכל מקרה בו נתבקשתם לסייע בפריקת הגרוטאות, כאמור.</p>
+                    
+                    <p>10. ידוע לנו, כי הסכמתכם לסייע לנו, או למי מטעמנו, בפריקת הגרוטאות מהרמסות הינה בכפוף ועל יסוד התחייבויותינו כאמור לעיל.</p>
+                    
+                    <p>11. לא יהא תוקף לכל ויתור או שינוי בתנאי התחייבות זו, אלא אם כן אתם תסכימו לה בכתב.</p>
+                    
+                    <p>12. חתימה זו תקפה עד לתאריך 01/02/2027.</p>
+                    
+                    <p><strong>ולראיה, באנו על החתום</strong></p>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="liability-supplier">שם הספק:</label>
+                        <input type="text" id="liability-supplier" placeholder="הזן שם ספק">
+                    </div>
+                    <div class="form-group">
+                        <label for="liability-arrival">שעת הגעה:</label>
+                        <input type="time" id="liability-arrival">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="liability-truck">מספר משאית:</label>
+                        <input type="text" id="liability-truck" placeholder="הזן מספר משאית">
+                    </div>
+                    <div class="form-group">
+                        <label for="liability-driver">שם הנהג:</label>
+                        <input type="text" id="liability-driver" placeholder="הזן שם הנהג">
+                    </div>
+                </div>
+                
+                <div class="signature-section">
+                    <h3>חתימה:</h3>
+                    <div class="signature-canvas-container">
+                        <canvas id="liability-signature" class="signature-canvas"></canvas>
+                    </div>
+                    <div class="signature-actions">
+                        <button class="btn btn-clear" onclick="clearSignature('liability-signature')">🗑️ נקה חתימה</button>
+                        <button class="btn btn-secondary" onclick="clearForm('liability')">🔄 נקה טופס</button>
+                        <button class="btn btn-download" onclick="downloadForm('liability')">📥 הורד כ-PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize signature canvases
+        const signatureCanvases = {};
+        
+        function initSignatureCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) {
+                console.error('Canvas not found:', canvasId);
+                return;
+            }
+            
+            // Skip if already properly initialized
+            if (signatureCanvases[canvasId] && signatureCanvases[canvasId].initialized) {
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            const container = canvas.parentElement;
+            
+            // Get dimensions - use container width, fixed height
+            let width, height = 150;
+            
+            // For liability form, get the safety canvas width if it exists
+            if (canvasId === 'liability-signature' && signatureCanvases['safety-signature']) {
+                width = signatureCanvases['safety-signature'].canvas.width;
+            } else {
+                const containerRect = container.getBoundingClientRect();
+                width = containerRect.width - 20;
+            }
+            
+            if (width <= 0) width = 500;
+            
+            // Set canvas size
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.fillStyle = '#000';
+            
+            // Drawing state
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                
+                let clientX, clientY;
+                if (e.touches && e.touches.length > 0) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+            
+            canvas.onmousedown = function(e) {
+                e.preventDefault();
+                isDrawing = true;
+                const pos = getPos(e);
+                lastX = pos.x;
+                lastY = pos.y;
+            };
+            
+            canvas.onmousemove = function(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                lastX = pos.x;
+                lastY = pos.y;
+            };
+            
+            canvas.onmouseup = function(e) {
+                isDrawing = false;
+            };
+            
+            canvas.onmouseleave = function(e) {
+                isDrawing = false;
+            };
+            
+            canvas.ontouchstart = function(e) {
+                e.preventDefault();
+                isDrawing = true;
+                const pos = getPos(e);
+                lastX = pos.x;
+                lastY = pos.y;
+            };
+            
+            canvas.ontouchmove = function(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                lastX = pos.x;
+                lastY = pos.y;
+            };
+            
+            canvas.ontouchend = function(e) {
+                isDrawing = false;
+            };
+            
+            signatureCanvases[canvasId] = { canvas, ctx, initialized: true };
+        }
+        
+        function clearSignature(canvasId) {
+            const canvasData = signatureCanvases[canvasId];
+            if (!canvasData) return;
+            
+            const { canvas, ctx } = canvasData;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        function clearForm(type) {
+            try {
+                if (type === 'safety') {
+                    document.getElementById('safety-supplier').value = '';
+                    document.getElementById('safety-date').value = new Date().toISOString().split('T')[0];
+                    document.getElementById('safety-fullname').value = '';
+                    document.getElementById('safety-id').value = '';
+                    clearSignature('safety-signature');
+                } else {
+                    document.getElementById('liability-date').value = new Date().toISOString().split('T')[0];
+                    document.getElementById('liability-supplier').value = '';
+                    document.getElementById('liability-arrival').value = '';
+                    document.getElementById('liability-truck').value = '';
+                    document.getElementById('liability-driver').value = '';
+                    clearSignature('liability-signature');
+                }
+            } catch (error) {
+                alert('שגיאה בניקוי הטופס: ' + error.message);
+            }
+        }
+        
+        function isSignatureEmpty(canvasId) {
+            const canvasData = signatureCanvases[canvasId];
+            if (!canvasData) return true;
+            
+            const { canvas, ctx } = canvasData;
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                if (imageData.data[i + 3] !== 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        function getSignatureData(canvasId) {
+            const canvasData = signatureCanvases[canvasId];
+            if (!canvasData) return '';
+            return canvasData.canvas.toDataURL('image/png');
+        }
+        
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-form').classList.add('active');
+        }
+        
+        // Form data handling
+        function getSafetyFormData() {
+            const validityInput = document.getElementById('safety-validity').value;
+            const validityDate = new Date(validityInput + '-01');
+            const validityText = validityDate.toLocaleDateString('he-IL', { year: 'numeric', month: 'long' });
+            
+            return {
+                type: 'safety',
+                typeName: 'טופס בטיחות',
+                supplier: document.getElementById('safety-supplier').value,
+                date: document.getElementById('safety-date').value,
+                fullname: document.getElementById('safety-fullname').value,
+                idNumber: document.getElementById('safety-id').value,
+                validity: validityInput,
+                validityText: validityText,
+                signature: getSignatureData('safety-signature'),
+                savedAt: new Date().toISOString()
+            };
+        }
+        
+        function getLiabilityFormData() {
+            const validityInput = document.getElementById('liability-validity').value;
+            const validityDate = new Date(validityInput);
+            const validityText = validityDate.toLocaleDateString('he-IL');
+            
+            return {
+                type: 'liability',
+                typeName: 'פטור מאחריות על פריקת גרוטאות',
+                date: document.getElementById('liability-date').value,
+                supplier: document.getElementById('liability-supplier').value,
+                arrivalTime: document.getElementById('liability-arrival').value,
+                truckNumber: document.getElementById('liability-truck').value,
+                driverName: document.getElementById('liability-driver').value,
+                validity: validityInput,
+                validityText: validityText,
+                signature: getSignatureData('liability-signature'),
+                savedAt: new Date().toISOString()
+            };
+        }
+        
+        function validateForm(type) {
+            if (type === 'safety') {
+                const data = getSafetyFormData();
+                if (!data.supplier || !data.date || !data.fullname || !data.idNumber) {
+                    alert('נא למלא את כל השדות');
+                    return false;
+                }
+                if (isSignatureEmpty('safety-signature')) {
+                    alert('נא לחתום על הטופס');
+                    return false;
+                }
+            } else {
+                const data = getLiabilityFormData();
+                if (!data.date || !data.supplier || !data.driverName) {
+                    alert('נא למלא את כל השדות הנדרשים');
+                    return false;
+                }
+                if (isSignatureEmpty('liability-signature')) {
+                    alert('נא לחתום על הטופס');
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // PDF Generation
+        function downloadForm(type) {
+            try {
+                if (!validateForm(type)) return;
+                
+                const data = type === 'safety' ? getSafetyFormData() : getLiabilityFormData();
+                generatePDF(data);
+            } catch (error) {
+                alert('שגיאה בהורדת PDF: ' + error.message);
+            }
+        }
+        
+        function generatePDF(data) {
+            // Create a printable version and use browser's print-to-PDF
+            const printWindow = window.open('', '_blank');
+            
+            let content = '';
+            
+            if (data.type === 'safety') {
+                content = `
+                    <h1 style="text-align: center; margin-bottom: 10px;">טופס בטיחות</h1>
+                    <p style="text-align: center; margin-bottom: 20px;">יהודה פלדות בע"מ</p>
+                    
+                    <p><strong>שם הספק:</strong> ${data.supplier}</p>
+                    <p><strong>תאריך:</strong> ${data.date}</p>
+                    
+                    <h3 style="margin-top: 20px;">כללי הבטיחות:</h3>
+                    <ol>
+                        <li>חובה לחבוש קסדות מגן ואפוד זוהר בירידה מהמשאית.</li>
+                        <li>חובה לנוע עם בגדי עבודה תקינים ונעלי עבודה בטיחותיים.</li>
+                        <li>נסיעה לאחור מותרת רק באמצעות מחוון.</li>
+                        <li>פריקה תתבצע רק באישור המסווג.</li>
+                        <li>לפני הנסיעה חובה להוריד את הרמ-סע למצב מאוזן ולנעול את הדלת.</li>
+                        <li>מהירות נסיעה מותרת במגרש עד 10 קמ"ש.</li>
+                        <li>חובה לשמור מרחק של 6 מטר מכלי צמ"ה ומשאיות במגרש.</li>
+                    </ol>
+                    
+                    <p style="margin-top: 20px;"><strong>שם ושם משפחה:</strong> ${data.fullname}</p>
+                    <p><strong>מס' ת.ז:</strong> ${data.idNumber}</p>
+                    
+                    <p style="margin-top: 20px;"><strong>חתימת הנהג:</strong></p>
+                    <img src="${data.signature}" style="max-width: 200px; border: 1px solid #ccc; margin: 10px 0;">
+                    
+                    <p style="margin-top: 20px; font-size: 12px; color: #666;">טופס זה תקף עד ${data.validityText || 'פברואר 2027'}</p>
+                `;
+            } else {
+                content = `
+                    <h1 style="text-align: center; margin-bottom: 10px;">פטור מאחריות על פריקת גרוטאות</h1>
+                    
+                    <p><strong>תאריך:</strong> ${data.date}</p>
+                    
+                    <p style="margin-top: 15px;">
+                        <strong>לכבוד</strong><br>
+                        יהודה פלדות בע"מ ו/או יהודה רשתות פלדה בע"מ<br>
+                        ו/או כל חברה אם או חברה בת או חברה או תאגיד השלובים או הקשורים בהן
+                    </p>
+                    
+                    <p><strong>נכבדינו,</strong></p>
+                    <p><strong>הנידון: פטור מאחריות על פריקת גרוטאות</strong></p>
+                    
+                    <p style="font-size: 11px; line-height: 1.6;">
+                        הואיל ואנו, החותמים מטה, מספקים לכם ו/או מובילים עבורכם גרוטאות, הנאספות במכולות ("רמסות"), ממקומות איסופן, ואחראים להובלת הגרוטאות ולפריקתן מהרמסות בחצר מפעליכם. אנו מצהירים, מאשרים, מסכימים ומתחייבים בזה, יחד ולחוד, לשאת במלוא האחריות לפריקת הגרוטאות ולנזקים העלולים להיגרם.
+                    </p>
+                    
+                    <div style="margin-top: 20px;">
+                        <p><strong>שם הספק:</strong> ${data.supplier}</p>
+                        <p><strong>שעת הגעה:</strong> ${data.arrivalTime}</p>
+                        <p><strong>מספר משאית:</strong> ${data.truckNumber}</p>
+                        <p><strong>שם הנהג:</strong> ${data.driverName}</p>
+                    </div>
+                    
+                    <p style="margin-top: 20px;"><strong>חתימה:</strong></p>
+                    <img src="${data.signature}" style="max-width: 200px; border: 1px solid #ccc; margin: 10px 0;">
+                    
+                    <p style="margin-top: 20px; font-size: 12px; color: #666;">חתימה זו תקפה עד לתאריך ${data.validityText || '01/02/2027'}</p>
+                `;
+            }
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="he" dir="rtl">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${data.typeName}</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            padding: 40px;
+                            max-width: 800px;
+                            margin: 0 auto;
+                            line-height: 1.6;
+                        }
+                        h1 { color: #2c3e50; }
+                        h3 { color: #34495e; margin-top: 20px; }
+                        ol { padding-right: 20px; }
+                        li { margin-bottom: 8px; }
+                        p { margin: 8px 0; }
+                        @media print {
+                            body { padding: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Small delay to ensure DOM is fully ready
+            setTimeout(function() {
+                initSignatureCanvas('safety-signature');
+                initSignatureCanvas('liability-signature');
+            }, 100);
+            
+            // Set default dates to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('safety-date').value = today;
+            document.getElementById('liability-date').value = today;
+        });
+        
+        // Re-init canvas when switching tabs (in case canvas wasn't visible)
+        const originalSwitchTab = switchTab;
+        switchTab = function(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-form').classList.add('active');
+            
+            if (tabName === 'safety') {
+                setTimeout(() => initSignatureCanvas('safety-signature'), 50);
+            } else if (tabName === 'liability') {
+                setTimeout(() => initSignatureCanvas('liability-signature'), 50);
+            }
+        };
+    </script>
+</body>
+</html>
